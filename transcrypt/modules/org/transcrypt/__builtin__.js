@@ -1790,6 +1790,19 @@ String.prototype.py_split = function (sep, maxsplit) {  // Combination of genera
     }
 };
 
+String.prototype.splitlines = function (keepends) {
+    if (this.length === 0) {
+        return [];
+    }
+
+    if (keepends === undefined || keepends === null || keepends === false) {
+        return this.trimEnd().split(/\r?\n|\r|\n/g);
+    }
+    else {
+        return this.split(/(?<=\n)(?=\n)|(?<=[\r\n])(?=[^\r\n])/g);
+    }
+};
+
 String.prototype.startswith = function (prefix, start=0, end) {
     if (end === undefined) {end = this.length}
     const str = this.slice(start, end)

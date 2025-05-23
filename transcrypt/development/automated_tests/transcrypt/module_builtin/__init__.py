@@ -4,7 +4,7 @@ from org.transcrypt.stubs.browser import __envir__
 
 def canonizeString (aString):
     if __envir__.executor_name == 'transcrypt':
-        return aString.replace ('\t', '\\t') .replace ('\n', '\\n')
+        return aString.replace ('\t', '\\t').replace ('\n', '\\n').replace ('\r', '\\r')
     else:
         return aString
 
@@ -133,6 +133,23 @@ def run (autoTester):
             canonizeStringList (aString.rsplit (',')),
             canonizeStringList (aString.rsplit (',', 4)),
             '<br>'
+        )
+
+    lines_to_split = ['', '\n',
+                 'abc\n',
+                 'abc\ndef',
+                 'abc\rdef',
+                 'abc\r\ndef',
+                 '\nabc',
+                 '\nabc\n',
+                 'abc\ndef\r\nghi\rjkl\n',
+                 'abc\ndef\n\nghi\njkl'
+                 ]
+    autoTester.check ('<br>splitlines')
+    for line in lines_to_split:
+        autoTester.check (
+            canonizeStringList(line.splitlines ()),
+            canonizeStringList(line.splitlines (True)),
         )
 
     autoTester.check("isalpha",
